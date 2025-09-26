@@ -19,5 +19,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/lien',include('QrCode.lien_urls'))
+    path('lien/',include('QrCode.lien_urls')),
+    path('auth/',include('api_auth.urls'))
 ]

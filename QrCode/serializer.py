@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from .models import Lien, QrCode
-from .models import Email
-from .models import Text
-from .models import SMS
-from .models import WIFI
-from .models import Contact
+# from .models import Email
+# from .models import Text
+# from .models import SMS
+# from .models import WIFI
+# from .models import Contact
 
 
 """

@@ -11,7 +11,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     TYPE_PREMIUM = "premium"
     
     TYPE_ABONNEMENT = [
-        (TYPE_STANDARD , "standard")
+        (TYPE_STANDARD , "standard"),
         (TYPE_PREMIUM , "premium")
     ]
     

@@ -1,5 +1,4 @@
-from pyexpat import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
@@ -28,39 +27,45 @@ class  QrCode(models.Model):  # Définition des choix comme tuple de tuples
     TYPE_CONTACT = "contact"
     
     TYPE_QR_CODE = [
-        (TYPE_TEXTE , "texte")
-        (TYPE_EMAIL , "email")
-        (TYPE_WIFI , "wifi")
-        (TYPE_LIEN , "lien")
-        (TYPE_SMS , "sms")
+        (TYPE_TEXTE , "text"),
+        (TYPE_EMAIL , "email"),
+        (TYPE_WIFI , "wifi"),
+        (TYPE_LIEN , "lien"),
+        (TYPE_SMS , "sms"),
         (TYPE_CONTACT , "contact")
     ]
     type_qr_code = models.CharField(max_length = 100, choices = TYPE_QR_CODE, default = TYPE_TEXTE)
-    user_id = models.ForeignKey('auth.User', on_delete = models.CASCADE, related_name = 'qrcodes')
- 
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    ) 
 
 
 class Lien(models.Model):
-    lien_url = models.URLField(max_lenght=255, help_text="Entrez une URL complète avec http:// ou https://")
-    description = models.CharField(max_lenght=255, null=True, blanck=True)
-    logo_url = models.CharField(max_lenght=255, null=True, blanck=True)
+    qr_id = models.ForeignKey('QrCode', on_delete= models.CASCADE )
+    lien_url = models.URLField(max_length=255, help_text="Entrez une URL complète avec http:// ou https://")
+    description = models.CharField(max_length=255, null=True, blank=True)
+    logo_url = models.CharField(max_length =255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     
 class Email(models.Model):
+    qr_id = models.ForeignKey("QrCode", on_delete=models.CASCADE)
     adresse = models.EmailField()
-    sujet = models.CharField(max_lenght = 255)
+    sujet = models.CharField(max_length = 255)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class Texte(models.Model):
+    qr_id = models.ForeignKey("QrCode", on_delete=models.CASCADE)
     texte = models.TextField()
     
     
 class SMS(models.Model):
+    qr_id = models.ForeignKey("QrCode", on_delete=models.CASCADE)
     numero_destinataire = models.CharField(max_length = 100)
     message = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now=True)
@@ -68,6 +73,7 @@ class SMS(models.Model):
 
 
 class WIFI(models.Model):
+    qr_id = models.ForeignKey("QrCode", on_delete=models.CASCADE)
     nom_du_reseau = models.CharField(max_length = 100)
     mot_de_passe = models.CharField(max_length = 255)
     type_de_chiffrement = models.CharField(max_length = 20)
@@ -76,11 +82,12 @@ class WIFI(models.Model):
 
 
 class Contact(models.Model):
+    qr_id = models.ForeignKey("QrCode", on_delete=models.CASCADE)
     nom = models.CharField(max_length = 100)
     prenom = models.CharField(max_length = 100)
     entreprise = models.CharField(max_length = 150)
     telephone = models.CharField(max_length = 100)
     email = models.EmailField()
-    site_web_url = models.URLField(max_length=100, null=True, blanck=True, help_text="Entrez une URL complète avec http:// ou https://")
+    site_web_url = models.URLField(max_length=100, null=True, blank=True, help_text="Entrez une URL complète avec http:// ou https://")
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
