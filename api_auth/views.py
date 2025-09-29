@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
-from .serializers import  AllUserSerializer, UserSerializer,UserRegisterSerializer
+from .serializers import  AllUserSerializer, UpdateUserSerializer, UserSerializer,UserRegisterSerializer
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -34,15 +34,18 @@ class LoginView(APIView):
         email = request.data.get("email")
         password = request.data.get("password")
 
-        user = authenticate(email=email, password=password)
+        user = authenticate(username=email, password=password)
         if user is not None:
             refresh = RefreshToken.for_user(user)
             return Response(
                 {
+                    "statuts": True,
+                    "message": "Utilisateur connecté avec succès",
                     "refresh": str(refresh),
                     "access": str(refresh.access_token),
                     "user": UserSerializer(user).data,
-                }
+                },
+                status=status.HTTP_200_OK,
             )
         else:
             return Response({"error": "Invalid credentials"}, status=400)
@@ -68,3 +71,9 @@ class AllUsers(generics.ListAPIView):
     
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+    
+class UpdateUser(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UpdateUserSerializer
+    
+    

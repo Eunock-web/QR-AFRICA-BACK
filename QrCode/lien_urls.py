@@ -1,18 +1,10 @@
 from django.urls import path
-
-from .views import(
-    CreateLien,
-    DetailLien,
-    ListLien,
-    UpdateLien,
-    DestroyLien
-)
-
+from .lien_views import LienCreateView, LienRetrieveView, LienListView, LienUpdateView, LienDestroyView
 
 urlpatterns = [
-    path("create/", CreateLien.as_view()),
-    path("list/", ListLien.as_view()),
-    path("detail/<int:pk>/", DetailLien.as_view()),
-    path("update/<int:pk>/", UpdateLien.as_view()),
-    path("delete/<int:pk>/", DestroyLien.as_view()),
+    path("createLien/", LienCreateView.as_view()),
+    path("listLien/", LienListView.as_view()),
+    path("detailLien/<int:pk>/", LienRetrieveView.as_view()),
+    path("updateLien/<int:pk>/", LienUpdateView.as_view()),
+    path("deleteLien/<int:pk>/", LienDestroyView.as_view()),
 ]

@@ -18,3 +18,8 @@ class QrcodeStatsView(APIView):
         by_type = QrCode.objects.values("type").annotate(count=Count("id"))
 
         return Response({"total": by_type, "statuts": True})
+
+        #Fonction pour chercher les qr code d'un utilisateur
+    def get_all_qruser(self, request, user_id):
+        qr = QrCode.objects.filter(user_id=user_id)
+        return Response({"total": qr, "statuts": True})

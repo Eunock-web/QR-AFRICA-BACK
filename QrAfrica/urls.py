@@ -20,5 +20,11 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('lien/',include('QrCode.lien_urls')),
-    path('auth/',include('api_auth.urls'))
+    path('auth/',include('api_auth.urls')),
+    path('texte/',include('QrCode.text_urls')),
+    path('sms/',include('QrCode.sms_urls')),
+    path('email/',include('QrCode.email_urls')),
+    path('wifi/',include('QrCode.wifi_urls')),
+    path('contact/',include('QrCode.contact_urls')),
+    path('qrcode/',include('QrCode.qr_urls')),
 ]

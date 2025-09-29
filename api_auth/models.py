@@ -22,7 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     type_abonnement = models.CharField(max_length = 100, choices = TYPE_ABONNEMENT, default = TYPE_STANDARD)
     is_superuser = models.BooleanField (default=False)
     is_verified = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     profil = models.CharField(max_length = 255)
     created_at = models.DateTimeField(auto_now_add= True)
     last_login = models.DateTimeField(auto_now = True)
